@@ -1,0 +1,81 @@
+package com.cadastro.serviceImpl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cadastro.exception.ErroAutentication;
+import com.cadastro.exception.RegraNegocioException;
+import com.cadastro.exception.ResourceNotFoundException;
+import com.cadastro.model.Usuarios;
+import com.cadastro.repositories.UsuarioRepository;
+import com.cadastro.service.UsuarioService;
+
+@Service
+public class UsuarioServiceImpl implements UsuarioService {
+
+	@Autowired
+	private UsuarioRepository repository;
+	
+	@Override
+	public Usuarios autenticar(String email, String senha) {
+		Optional<Usuarios> usuario = repository.findByEmail(email);
+		
+		if(!usuario.isPresent()) {
+			throw new ErroAutentication("Usuário não encontrado");
+		}
+		
+		if(!usuario.get().getSenha().equals(senha)) {
+			throw new ErroAutentication("Senha incorreta");
+		}
+		
+		return usuario.get();
+	}
+	
+	@Override
+	public Usuarios saveUsuarios(Usuarios usuarios) {
+		validarEmail(usuarios.getEmail());
+		return repository.save(usuarios);
+	}
+	
+	@Override
+	public void validarEmail(String email) {
+		boolean existe = repository.existeByEmail(email);
+		if(existe) {
+			throw new RegraNegocioException
+			("Usuário já cadastrado");
+		}
+	}
+	
+	@Override
+	public List<Usuarios> getAllUsuarios() {
+		return repository.findAll();
+	}
+	
+	@Override
+	public Optional<Usuarios> findById(long id_usuario) {
+		return repository.findById(id_usuario);
+	}
+	
+	@Override
+	public Usuarios updateUsuarios(Usuarios usuario, Long id_usuario) {
+		
+		Usuarios existe = repository.findById(id_usuario).orElseThrow(()
+					-> new ResourceNotFoundException("Usuário", "id", id_usuario));
+		
+		existe.setNome_usuario(usuario.getNome_usuario());
+		existe.setEmail(usuario.getEmail());
+		existe.setSenha(usuario.getSenha());
+		
+		repository.save(existe);
+		return existe;
+	}
+	
+	@Override
+	public void deleteUsuarios(long id_usuario) {
+		repository.findById(id_usuario).orElseThrow(()
+				-> new ResourceNotFoundException("Usuário", "id", id_usuario));
+	}
+}

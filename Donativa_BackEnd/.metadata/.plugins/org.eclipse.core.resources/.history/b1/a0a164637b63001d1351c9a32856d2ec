@@ -1,0 +1,5 @@
+package com.cadastro.repositories;
+
+public interface AdminRepository extends JpaRepository<Admin, Long> {
+
+}

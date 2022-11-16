@@ -1,0 +1,12 @@
+package com.cadastro.serviceImpl;
+
+import org.springframework.stereotype.Service;
+
+import com.cadastro.service.UsuarioService;
+
+@Service
+public class UsuarioServiceImpl implements UsuarioService {
+
+	@Autowired
+	private Usua
+}

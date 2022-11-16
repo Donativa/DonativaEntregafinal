@@ -1,0 +1,5 @@
+package com.cadastro.dto;
+
+public class UsuariosDTO {
+
+}

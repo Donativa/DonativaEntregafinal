@@ -1,0 +1,21 @@
+package com.cadastro.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.cadastro.model.Usuarios;
+
+public interface UsuarioService {
+
+	Usuarios autenticar(String email, String senha);
+	
+	void validarEmail(String email);
+	
+	Optional<Usuarios> findById(long id);
+	
+	Usuarios saveUsuarios(Usuarios usuario);
+	List<Usuarios> getAllUsuarios();
+	Usuarios getUsuariosById(long id_usuario);
+	Usuarios updateUsuarios(Usuarios usuario, Long id_usuario);
+	void deleteUsuarios(long id_usuario);
+}

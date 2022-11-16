@@ -1,0 +1,54 @@
+package com.cadastro.serviceImpl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cadastro.exception.ResourceNotFoundException;
+import com.cadastro.model.Beneficiario;
+import com.cadastro.repositories.BeneficiarioRepository;
+import com.cadastro.service.BeneficiarioService;
+
+public class BeneficiarioServiceImpl implements BeneficiarioService {
+
+	@Autowired
+	private BeneficiarioRepository repository;
+	
+	@Override
+	public Beneficiario saveBeneficiario(Beneficiario bene) {
+		return repository.save(bene);
+	}
+	
+	@Override
+	public List<Beneficiario> getAllBeneficiario() {
+		return repository.findAll();
+	}
+	
+	@Override
+	public Beneficiario getBeneficiarioById(long id_beneficiario) {
+		return repository.findById(id_beneficiario).orElseThrow(()
+				-> new ResourceNotFoundException("Benenficiario", "id", id_beneficiario));
+	}
+	
+	@Override
+	public Beneficiario updateBeneficiario(Beneficiario bene, long id_beneficiario) {
+		
+		Beneficiario existe = repository.findById(id_beneficiario).orElseThrow(()
+				-> new ResourceNotFoundException("Beneficiario", "id", id_beneficiario));
+				
+		existe.setNome_bn(bene.getNome_bn());
+		existe.setRg_bn(bene.getRg_bn());
+		existe.setCpf_bn(bene.getCpf_bn());
+		existe.setData_nasc_bn(bene.getData_nasc_bn());
+		existe.setTelefone_bn(bene.getTelefone_bn());
+		
+		repository.save(existe);
+		return existe;
+	}
+	
+	@Override
+	public void deleteBeneficiario(long id_beneficiario) {
+		repository.findById(id_beneficiario).orElseThrow(()
+				-> new ResourceNotFoundException("Beneficiario", "id", id_beneficiario));
+	}
+}

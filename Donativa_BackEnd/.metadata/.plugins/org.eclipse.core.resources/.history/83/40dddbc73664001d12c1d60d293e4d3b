@@ -1,0 +1,14 @@
+package com.cadastro.service;
+
+import java.util.List;
+
+import com.cadastro.model.Beneficiario;
+
+public interface BeneficiarioService {
+
+	Beneficiario saveBeneficiario(Beneficiario bene);
+	List<Beneficiario> getAllBeneficiario();
+	Beneficiario updateBeneficiario(Beneficiario bene, long id_beneficiario);
+	Beneficiario getBeneficiarioById(long id_beneficiario);
+	void deleteBeneficiario(long id_beneficiario);
+}
